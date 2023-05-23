@@ -203,7 +203,7 @@ function shouldPanCameraDown() {
 function shouldPanCameraUp() {
     if (
       camerabox.position.y + camerabox.height + velocity.y >=
-      750
+      740
     )
       return
 

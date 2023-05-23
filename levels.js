@@ -1,4 +1,7 @@
-let levelStart = true;
+let gamecontroller = {
+    level: 0,
+    levelStart: true
+}
 
 let platform1 = {
     x : 0,
@@ -13,22 +16,56 @@ let spawner = {
     y : 0,
 }
 
-function spawn({x, y}){
-    if(levelStart){
-        player.x = x;
-        player.y = y;
-        levelStart = false;
+function levelController(){
+    switch(gamecontroller.level){
+        case 0:
+            menu();
+            break;
+        case 1:
+            level1();
+            break;
+        case 2:
+            level2();
+            break;
+        case 3:
+            level3();
+            break;
+        case 4:
+            level4();
+            break;
+        default:
+            gamecontroller.level = 0;
+            break;
     }
 }
 
+function spawn({x, y}){
+    if(gamecontroller.levelStart){
+        player.x = x;
+        player.y = y;
+        gamecontroller.levelStart = false;
+    }
+}
+
+
+
 function level1(){
     spawner.x = 30;
-    spawner.y = 300;
+    spawner.y = 450;
     spawn(spawner);
 
     setPlatformValue(0, 729, 1500, 10, "#000000");
     setPlatformValue(800, 600, 100, 20, "#000000");
     setPlatformValue(600, 500, 100, 20, "#000000");
+}
+
+function level2(){
+}
+
+function level3(){
+}
+
+function level4(){
 }
 
 function setPlatformValue(x, y, width, height, color){
