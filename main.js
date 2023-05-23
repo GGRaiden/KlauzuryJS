@@ -5,11 +5,6 @@ window.onload = function(){
     setInterval(draw, 15)
 }
 
-const scaledCanvas = {
-  width: canvas.width / 3,
-  height: canvas.height / 3,
-}
-
 const camera = {
   position: {
     x: 0,
