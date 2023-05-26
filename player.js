@@ -3,16 +3,23 @@ let player = {
     y : 400,
     width : 20,
     height : 30,
+    isAttacking: false,
+    health: 100,
+    dead: false,
 
     imageSrc: './img/warrior/Idle.png',
     frameRate: 1,
     frameBuffer: 3,
     scale: 0.5,
+    offset: {
+        x: 215,
+        y: 157
+    },
     animations: {
         Idle: {
         imageSrc: './img/warrior/Idle.png',
         frameRate: 8,
-        frameBuffer: 3,
+        frameBuffer: 4,
         },
         Run: {
         imageSrc: './img/warrior/Run.png',
@@ -22,17 +29,17 @@ let player = {
         Jump: {
         imageSrc: './img/warrior/Jump.png',
         frameRate: 2,
-        frameBuffer: 3,
+        frameBuffer: 4,
         },
         Fall: {
         imageSrc: './img/warrior/Fall.png',
         frameRate: 2,
-        frameBuffer: 3,
+        frameBuffer: 4,
         },
         FallLeft: {
         imageSrc: './img/warrior/FallLeft.png',
         frameRate: 2,
-        frameBuffer: 3,
+        frameBuffer: 4,
         },
         RunLeft: {
         imageSrc: './img/warrior/RunLeft.png',
@@ -42,14 +49,43 @@ let player = {
         IdleLeft: {
         imageSrc: './img/warrior/IdleLeft.png',
         frameRate: 8,
-        frameBuffer: 3,
+        frameBuffer: 4,
         },
         JumpLeft: {
         imageSrc: './img/warrior/JumpLeft.png',
         frameRate: 2,
+        frameBuffer: 4,
+        },
+        Attack1: {
+        imageSrc: './img/warrior/Attack1.png',
+        frameRate: 4,
+        frameBuffer: 5,
+        },
+        TakeHit: {
+        imageSrc: './img/warrior/TakeHit.png',
+        frameRate: 4,
+        frameBuffer: 3,
+        },
+        Death: {
+        imageSrc: './img/warrior/Death.png',
+        frameRate: 6,
         frameBuffer: 3,
         },
     },
+
+    attackBox: {
+        position: {
+            x: 0,
+            y: 0,
+        },
+        offset: {
+          x: 18,
+          y: 10
+        },
+        width: 28,
+        height: 15
+    },
+
     lastDirection: 'right',
 }
 
@@ -87,6 +123,22 @@ let velocity = {
 
 function switchSprite(key) {
     if (image === player.animations[key].image || !sprite.loaded) return
+    if (
+        image === player.animations.Attack1.image &&
+        currentFrame < player.animations.Attack1.frameRate - 1
+      )
+        return
+    if (image === player.animations.Death.image) {
+        if (currentFrame === player.animations.Death.frameRate - 1)
+            player.dead = true
+            return
+    }
+
+    if (
+        image === player.animations.TakeHit.image &&
+        currentFrame < player.animations.TakeHit.frameRate - 1
+    )
+    return
 
     currentFrame = 0
     image = player.animations[key].image
@@ -94,14 +146,19 @@ function switchSprite(key) {
     player.frameRate = player.animations[key].frameRate
 }
 
-function drawPlayer(){    
+function drawPlayer(){
+    //ctx.fillStyle='red';
+    //ctx.fillRect(player.attackBox.position.x, player.attackBox.position.y, player.attackBox.width, player.attackBox.height);
     //ctx.fillStyle = 'rgba(255, 0, 0, 0.2)'
     //ctx.fillRect(player.x, player.y, player.width, player.height)
+
+    update();
+    
+    if(player.dead) return
     playergravity();
     jump();
     moveHorizontal();
     updateCamerabox();
-    update();
 
     /*ctx.fillStyle = 'rgba(0, 0, 255, 0.2)'
     ctx.fillRect(
@@ -110,6 +167,17 @@ function drawPlayer(){
         camerabox.width,
         camerabox.height
     )*/
+
+    player.attackBox.position.x = player.x + player.attackBox.offset.x
+    player.attackBox.position.y = player.y + player.attackBox.offset.y
+}
+
+function takeHit() {
+    player.health -= 10
+
+    if (player.health <= 0) {
+      switchSprite('Death')
+    } else switchSprite('TakeHit')
 }
 
 function playergravity(){
@@ -159,10 +227,10 @@ function updateCamerabox() {
     camerabox = {
       position: {
         x: player.x - 90,
-        y: player.y - 20,
+        y: player.y - 40,
       },
       width: 200,
-      height: 60,
+      height: 80,
     }
 }
 

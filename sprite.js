@@ -52,7 +52,7 @@ function drawSprite() {
   
 function update() {
     drawSprite()
-    updateFrames()
+    if(!player.dead) updateFrames()
 }
   
 function updateFrames() {

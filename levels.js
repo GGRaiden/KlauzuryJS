@@ -1,5 +1,5 @@
 let gamecontroller = {
-    level: 0,
+    level: 3,
     levelStart: true
 }
 
@@ -47,12 +47,11 @@ function spawn({x, y}){
     }
 }
 
-
-
 function level1(){
     spawner.x = 30;
     spawner.y = 450;
     spawn(spawner);
+    background.src = "./img/backgrounds/background1.png"
 
     setPlatformValue(0, 729, 1500, 10, "#000000");
     setPlatformValue(800, 600, 100, 20, "#000000");
@@ -60,9 +59,19 @@ function level1(){
 }
 
 function level2(){
+    background.src = "./img/backgrounds/background2.png"
 }
 
 function level3(){
+    spawner.x = 30;
+    spawner.y = 530;
+    spawn(spawner);
+    background.src = "./img/backgrounds/background3.png"
+
+    setPlatformValue(0, 560, 1500, 10, "rgba(255, 255, 255, 0)");
+
+    drawEnemy();
+    switchEnemySprite("Idle")
 }
 
 function level4(){
