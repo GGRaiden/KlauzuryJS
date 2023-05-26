@@ -59,7 +59,7 @@ function updateFrames() {
     sprite.elapsedFrames++
 
     if (sprite.elapsedFrames % player.frameBuffer === 0) {
-    if (currentFrame < player.frameRate - 1) currentFrame++
-    else currentFrame = 0
+        if (currentFrame < player.frameRate - 1) currentFrame++
+        else currentFrame = 0
     }
 }

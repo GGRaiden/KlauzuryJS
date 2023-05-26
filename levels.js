@@ -71,7 +71,6 @@ function level3(){
     setPlatformValue(0, 560, 1500, 10, "rgba(255, 255, 255, 0)");
 
     drawEnemy();
-    switchEnemySprite("Idle")
 }
 
 function level4(){

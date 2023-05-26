@@ -22,8 +22,6 @@ const keys = {
   },
 }
 
-let lastKey = '';
-
 function drawBackground() {
   ctx.drawImage(background, 0, 0, background.width, background.height);
 }
@@ -37,14 +35,14 @@ function draw() {
     levelController();
     drawPlayer();
 
-    if (keys.d.pressed && lastKey == 'd') {
+    if (keys.d.pressed) {
         movement.right = true;
         movement.left = false;
         velocity.x = 5
         switchSprite('Run')
         player.lastDirection = 'right'
         shouldPanCameraToTheLeft()
-    } else if (keys.a.pressed && lastKey == 'a') {
+    } else if (keys.a.pressed) {
         movement.left = true;
         movement.right = false;
         velocity.x = -5
@@ -75,7 +73,8 @@ function draw() {
     }
 
     if (player.isAttacking == true){
-      switchSprite("Attack1")
+      if(player.lastDirection == "right") switchSprite("Attack1")
+      else switchSprite("Attack1left")
     }
   }
   else {
@@ -86,6 +85,10 @@ function draw() {
     player.isAttacking = false
   }
 
+  if (enemy.isAttacking && enemycurrentFrame === 2) {
+    enemy.isAttacking = false
+  }
+
   if (
     rectangularCollision({
       rectangle1: player,
@@ -94,16 +97,27 @@ function draw() {
     player.isAttacking
   ) {
     takeEnemyHit()
-    console.log("hit")
     player.isAttacking = false
+
+    gsap.to('#enemyHealth', {
+      width: enemy.health + '%'
+    })
   }
 
-  /*console.log(rectangularCollision({
-    rectangle1: player,
-    rectangle2: enemy
-  }))*/
-  //console.log(player.isAttacking)
-  //console.log(currentFrame === 2)
+  if (
+    rectangularCollision({
+      rectangle1: enemy,
+      rectangle2: player
+    }) &&
+    enemy.isAttacking
+  ) {
+    takeHit()
+    enemy.isAttacking = false
+
+    gsap.to('#playerHealth', {
+      width: player.health + '%'
+    })
+  }
 
   ctx.restore();
 }
@@ -120,15 +134,25 @@ function rectangularCollision({ rectangle1, rectangle2 }) {
   )
 }
 
+function rectangularCollisionPlayer({ rectangle1, rectangle2 }) {
+  return (
+    rectangle1.playerDetection.x + rectangle1.playerDetection.width >=
+      rectangle2.x &&
+    rectangle1.playerDetection.x <=
+      rectangle2.x + rectangle2.width &&
+    rectangle1.playerDetection.y + rectangle1.playerDetection.height >=
+      rectangle2.y &&
+    rectangle1.playerDetection.y <= rectangle2.y + rectangle2.height
+  )
+}
+
 window.addEventListener('keydown', (event) => {
   switch (event.key) {
     case 'd':
       keys.d.pressed = true
-      lastKey = 'd'
       break
     case 'a':
       keys.a.pressed = true
-      lastKey = 'a'
       break
     case ' ':
       movement.canJump = true

@@ -61,7 +61,7 @@ function updateEnemyFrames() {
     enemysprite.elapsedFrames++
 
     if (enemysprite.elapsedFrames % enemy.frameBuffer === 0) {
-    if (enemycurrentFrame < enemy.frameRate - 1) enemycurrentFrame++
-    else enemycurrentFrame = 0
+        if (enemycurrentFrame < enemy.frameRate - 1) enemycurrentFrame++
+        else enemycurrentFrame = 0
     }
 }
