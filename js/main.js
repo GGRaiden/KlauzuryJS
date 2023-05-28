@@ -8,7 +8,7 @@ window.onload = function(){
 }
 
 
-//camera
+//camera values
 const camera = {
   position: {
     x: 0,
@@ -29,7 +29,7 @@ const keys = {
   }
 }
 
-//backgounds
+//backgounds draw
 function drawBackground() {
   ctx.drawImage(background, 0, 0, background.width, background.height);
 }

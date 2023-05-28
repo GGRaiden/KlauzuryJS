@@ -96,18 +96,18 @@ function level1(){
     spawn(spawner);
     background.src = "./img/backgrounds/background1.png"
 
-    setPlatformValue(930, 581, 100, 10, "#604040");
-    setPlatformValue(0, 590, 180, 10, "#604040");
-    setPlatformValue(1150, 432, 350, 10, "#604040");
-    setPlatformValue(620, 590, 100, 10, "#604040");
-    setPlatformValue(420, 448, 100, 10, "#604040");
-    setPlatformValue(0, 300, 250, 10, "#604040");
-    setPlatformValue(858, 290, 100, 10, "#604040");
-    setPlatformValue(610, 200, 100, 10, "#604040");
-    setPlatformValue(892, 50, 100, 10, "#604040");
-    setPlatformValue(1300, 161, 200, 10, "#604040");
+    setPlatformsValue(930, 581, 100, 10, "#604040");
+    setPlatformsValue(0, 590, 180, 10, "#604040");
+    setPlatformsValue(1150, 432, 350, 10, "#604040");
+    setPlatformsValue(620, 590, 100, 10, "#604040");
+    setPlatformsValue(420, 448, 100, 10, "#604040");
+    setPlatformsValue(0, 300, 250, 10, "#604040");
+    setPlatformsValue(858, 290, 100, 10, "#604040");
+    setPlatformsValue(610, 200, 100, 10, "#604040");
+    setPlatformsValue(892, 50, 100, 10, "#604040");
+    setPlatformsValue(1300, 161, 200, 10, "#604040");
 
-    setDeathPlatformValue(0, lava.y, 1500, lava.height, "#8E0000")
+    setDeathPlatformsValue(0, lava.y, 1500, lava.height, "#8E0000")
 
     setLevelExitValue(1435, 92, 100, 100)
 
@@ -145,21 +145,21 @@ function level2(){
     spawn(spawner);
     background.src = "./img/backgrounds/background2.png"
 
-    setPlatformValue(0, 729, 1500, 10, "#867840");
-    setPlatformValue(355, 633, 100, 10, "#867840");
-    setPlatformValue(620, 633, 100, 10, "#867840");
-    setPlatformValue(880, 633, 100, 10, "#867840");
-    setPlatformValue(1128, 519, 100, 10, "#867840");
-    setPlatformValue(880, 380, 100, 10, "#867840");
-    setPlatformValue(620, 380, 100, 10, "#867840");
-    setPlatformValue(355, 380, 100, 10, "#867840");
-    setPlatformValue(80, 277, 100, 10, "#867840");
-    setPlatformValue(355, 105, 100, 10, "#867840");
-    setPlatformValue(620, 105, 100, 10, "#867840");
-    setPlatformValue(880, 105, 100, 10, "#867840");
-    setPlatformValue(1238, 93, 262, 10, "#867840");
+    setPlatformsValue(0, 729, 1500, 10, "#867840");
+    setPlatformsValue(355, 633, 100, 10, "#867840");
+    setPlatformsValue(620, 633, 100, 10, "#867840");
+    setPlatformsValue(880, 633, 100, 10, "#867840");
+    setPlatformsValue(1128, 519, 100, 10, "#867840");
+    setPlatformsValue(880, 380, 100, 10, "#867840");
+    setPlatformsValue(620, 380, 100, 10, "#867840");
+    setPlatformsValue(355, 380, 100, 10, "#867840");
+    setPlatformsValue(80, 277, 100, 10, "#867840");
+    setPlatformsValue(355, 105, 100, 10, "#867840");
+    setPlatformsValue(620, 105, 100, 10, "#867840");
+    setPlatformsValue(880, 105, 100, 10, "#867840");
+    setPlatformsValue(1238, 93, 262, 10, "#867840");
 
-    setDeathPlatformValue(250, 729, 1250, 10, "#00A905")
+    setDeathPlatformsValue(250, 729, 1250, 10, "#00A905")
 
     setLevelExitValue(1435, 24, 100, 100)
 }
@@ -172,7 +172,7 @@ function level3(){
     spawn(spawner);
     background.src = "./img/backgrounds/background3.png"
 
-    setPlatformValue(0, 560, 1500, 10, "rgba(255, 255, 255, 0)");
+    setPlatformsValue(0, 560, 1500, 10, "rgba(255, 255, 255, 0)");
 
     if(gamecontroller.defetedenemy) setLevelExitValue(1435, 491, 100, 100)
 
@@ -211,7 +211,7 @@ function level4(){
     spawner.y = 550;
     spawn(spawner);
     background.src = "./img/backgrounds/background4.png"
-    setPlatformValue(0, 588, 1500, 10, "rgba(255, 255, 255, 0)");
+    setPlatformsValue(0, 588, 1500, 10, "rgba(255, 255, 255, 0)");
 
     ctx.drawImage(treasure, 1400, 529, 60, 60);
 
@@ -228,18 +228,18 @@ function level4(){
 }
 
 //setting platforms values to platforms creator
-function setPlatformValue(x, y, width, height, color){
+function setPlatformsValue(x, y, width, height, color){
     platform.x = x;
     platform.y = y;
     platform.width = width;
     platform.height = height;
     platform.color = color;
 
-    platformCreator(platform);
+    platformsCreator(platform);
 }
 
 //creating platforms
-function platformCreator({x, y, width, height, color}){
+function platformsCreator({x, y, width, height, color}){
     ctx.fillStyle = color;
     ctx.fillRect(x, y, width, height);
 
@@ -255,7 +255,7 @@ function platformCreator({x, y, width, height, color}){
 }
 
 //setting death platforms values to death platforms creator
-function setDeathPlatformValue(x, y, width, height, color){
+function setDeathPlatformsValue(x, y, width, height, color){
     deathplatform.x = x;
     deathplatform.y = y;
     deathplatform.width = width;
