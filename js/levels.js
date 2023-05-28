@@ -24,8 +24,8 @@ let deathplatform = {
     color : "#000000"
 }
 
-//spawner values
-let spawner = {
+//start values
+let startvalues = {
     x : 0,
     y : 0,
 }
@@ -77,8 +77,8 @@ function levelController(){
     }
 }
 
-//set player position based on spawner values
-function spawn({x, y}){
+//set player position based on start values
+function start({x, y}){
     if(gamecontroller.levelStart){
         player.x = x;
         player.y = y;
@@ -91,9 +91,9 @@ function spawn({x, y}){
 //level 1
 function level1(){
     camerabox.height = 150
-    spawner.x = 30;
-    spawner.y = 540;
-    spawn(spawner);
+    startvalues.x = 30;
+    startvalues.y = 540;
+    start(startvalues);
     background.src = "./img/backgrounds/background1.png"
 
     setPlatformsValue(930, 581, 100, 10, "#604040");
@@ -140,9 +140,9 @@ lavarise()
 //level 2
 function level2(){
     camerabox.height = 80
-    spawner.x = 30;
-    spawner.y = 530;
-    spawn(spawner);
+    startvalues.x = 30;
+    startvalues.y = 530;
+    start(startvalues);
     background.src = "./img/backgrounds/background2.png"
 
     setPlatformsValue(0, 729, 1500, 10, "#867840");
@@ -167,9 +167,9 @@ function level2(){
 //level 3
 function level3(){
     camerabox.height = 80
-    spawner.x = 30;
-    spawner.y = 530;
-    spawn(spawner);
+    startvalues.x = 30;
+    startvalues.y = 530;
+    start(startvalues);
     background.src = "./img/backgrounds/background3.png"
 
     setPlatformsValue(0, 560, 1500, 10, "rgba(255, 255, 255, 0)");
@@ -189,7 +189,7 @@ function restart(){
     switchSprite('Fall')
 
     gamecontroller.levelStart = true;
-    spawn(spawner);
+    start(startvalues);
 
     enemy.x = 1400
     enemy.y = 530
@@ -207,9 +207,9 @@ function restart(){
 //level 4
 function level4(){
     camerabox.height = 80
-    spawner.x = 30;
-    spawner.y = 550;
-    spawn(spawner);
+    startvalues.x = 30;
+    startvalues.y = 550;
+    start(startvalues);
     background.src = "./img/backgrounds/background4.png"
     setPlatformsValue(0, 588, 1500, 10, "rgba(255, 255, 255, 0)");
 
@@ -273,8 +273,8 @@ function deathCreator({x, y, width, height, color}){
     //return the player to the beginning of the level if he touches the death platforms
     if(player.y + player.height >= y && player.y <= y + height){
         if(player.x + player.width >= x + 10 && player.x <= x + width - 10){
-            player.x = spawner.x;
-            player.y = spawner.y;
+            player.x = startvalues.x;
+            player.y = startvalues.y;
             camera.position.x = 0
             camera.position.y = -400
             lava.height = 10
