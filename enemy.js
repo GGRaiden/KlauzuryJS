@@ -1,3 +1,4 @@
+//enemy values
 let enemy = {
     x: 1400,
     y: 530,
@@ -78,6 +79,7 @@ let enemy = {
     lastDirection: "left"
 }
 
+//adding key in enemy animation
 for (let key in enemy.animations) {
     const image = new Image()
     image.src = enemy.animations[key].imageSrc
@@ -85,27 +87,35 @@ for (let key in enemy.animations) {
     enemy.animations[key].image = image
 }
 
+//switching enemy sprite depending on the key
 function switchEnemySprite(key) {
+    //same sprite - return
     if (enemyimage === enemy.animations[key].image || !enemysprite.loaded) return
 
+    //overriding all other animations with the attack animation
+    if (
+        enemyimage === enemy.animations.Attack1.image  &&
+        enemycurrentFrame < enemy.animations.Attack1.frameRate - 1
+    ) return
+    
+    //overriding all other animations with the attack left animation
+    if (
+        enemyimage === enemy.animations.Attack1left.image  &&
+        enemycurrentFrame < enemy.animations.Attack1left.frameRate - 1
+    ) return
+
+    //override when player gets hit
+    if (
+        enemyimage === enemy.animations.TakeHit.image &&
+        enemycurrentFrame < enemy.animations.TakeHit.frameRate - 1
+    ) return
+    
+    //override when player dies
     if (enemyimage === enemy.animations.Death.image) {
         if (enemycurrentFrame === enemy.animations.Death.frameRate - 1)
             enemy.dead = true
         return
     }
-
-    if (
-        enemyimage === enemy.animations.TakeHit.image &&
-        enemycurrentFrame < enemy.animations.TakeHit.frameRate - 1
-    ) return
-    if (
-        enemyimage === enemy.animations.Attack1.image  &&
-        enemycurrentFrame < enemy.animations.Attack1.frameRate - 1
-    ) return
-    if (
-        enemyimage === enemy.animations.Attack1left.image  &&
-        enemycurrentFrame < enemy.animations.Attack1left.frameRate - 1
-    ) return
 
     enemycurrentFrame = 0
     enemyimage = enemy.animations[key].image
@@ -114,16 +124,20 @@ function switchEnemySprite(key) {
 }
 
 function drawEnemy(){
+    //player detection range collision
     //ctx.fillStyle='blue';
     //ctx.fillRect(enemy.playerDetection.x, enemy.playerDetection.y, enemy.playerDetection.width, enemy.playerDetection.height);
 
+    //enemy attack box range collision
     //ctx.fillStyle='red';
     //ctx.fillRect(enemy.attackBox.position.x, enemy.attackBox.position.y, enemy.attackBox.width, enemy.attackBox.height);
 
+    //calling for enemy sprite animation
     enemyupdate();
 
     if (enemy.dead) return
     
+    //changing enemy direction according to the player's position + switching animations
     if (player.x < enemy.x && !player.dead) {
         enemy.x -= 2
         enemy.lastDirection = "left"
@@ -139,11 +153,13 @@ function drawEnemy(){
     enemy.playerDetection.x = enemy.x - 70;
     enemy.playerDetection.y = enemy.y - 20;
 
+    //switching attack box position depanding on what direction the enemy is facing
     if (enemy.lastDirection == "left") enemy.attackBox.position.x = enemy.x + enemy.attackBox.offset.x
     else enemy.attackBox.position.x = enemy.x - enemy.attackBox.offset.x - 18
     enemy.attackBox.position.y = enemy.y + enemy.attackBox.offset.y
 }
 
+//if player is in player detection collision - enemy starts attacking
 function enemyattack(){
     if (
       rectangularCollisionPlayer({
@@ -161,6 +177,7 @@ function enemyattack(){
 
 enemyattack();
 
+//enemy take hit
 function takeEnemyHit() {
     enemy.health -= 5
 

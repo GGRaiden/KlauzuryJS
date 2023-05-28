@@ -36,6 +36,7 @@ function drawBackground() {
 
 //draw - levels, player, camera
 function draw() {
+  //start rendering camera, player, background, levels and movement, if there is no menu
   if (gamecontroller.level != 0) {
     ctx.save();
     ctx.scale(3, 3)
@@ -44,6 +45,7 @@ function draw() {
     levelController();
     drawPlayer();
 
+    //moving horizontal to the left and right and idle + swapping sprites
     if (keys.d.pressed) {
         movement.right = true;
         movement.left = false;
@@ -71,6 +73,7 @@ function draw() {
         movement.left = false;
     }
 
+    //jump and fall + swapping sprites
     if (velocity.y < 0.5) {
       shouldPanCameraDown()
       if (player.lastDirection === 'right') switchSprite('Jump')
@@ -89,14 +92,17 @@ function draw() {
     levelController();
   }
   
+  //if player misses, player stop attacking
   if (player.isAttacking && currentFrame === 2) {
     player.isAttacking = false
   }
 
+  //if enemy misses, enemy stop attacking
   if (enemy.isAttacking && enemycurrentFrame === 2) {
     enemy.isAttacking = false
   }
 
+  //Take the enemy's lives, if there are weapons in the player's range and if the player is attacking
   if (
     rectangularCollision({
       rectangle1: player,
@@ -113,6 +119,7 @@ function draw() {
     })
   }
 
+  //Take the player's lives, if there are weapons in the enemy's range and if the enemy is attacking
   if (
     rectangularCollision({
       rectangle1: enemy,
@@ -131,15 +138,12 @@ function draw() {
 
   ctx.restore();
 
+  //Whether the player's or the enemy's lives are at zero will determine the winner
   if (enemy.health <= 0 && gamecontroller.level == 3 || player.health <= 0 && gamecontroller.level == 3) {
     determineWinner({ player, enemy})
   }
 
-  if (player.health <= 0 && keys.r.pressed){
-    location.reload();
-    gamecontroller.level = 3
-  }
-
+  //checking if the healthbar can be displayed
   if(gamecontroller.level == 3){
     document.querySelector('#healthbar').style.display = 'flex'
     document.querySelector('#playerhealth').style.display = 'flex'

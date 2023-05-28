@@ -1,3 +1,4 @@
+//sprite values
 let sprite = {
     position: {
         x: 0,
@@ -15,6 +16,7 @@ let currentFrame = 0;
 
 let image = new Image();
 
+//set sprite values onload of image
 function onload() {
     sprite.position.x = player.x
     sprite.position.y = player.y
@@ -22,7 +24,8 @@ function onload() {
     sprite.height = image.height * player.scale
     sprite.loaded = true
 }
-  
+
+//drawing player sprite
 function drawSprite() {
     onload()
 
@@ -54,7 +57,8 @@ function update() {
     drawSprite()
     if(!player.dead) updateFrames()
 }
-  
+
+//updating player sprite frames
 function updateFrames() {
     sprite.elapsedFrames++
 

@@ -30,6 +30,7 @@ let spawner = {
     y : 0,
 }
 
+//exit values
 let exit = {
     x : 0,
     y : 0,
@@ -37,6 +38,7 @@ let exit = {
     height : 0
 }
 
+//lava values
 let lava = {
     y : 729,
     height : 10,
@@ -47,6 +49,7 @@ let lava = {
 let treasure = new Image()
 treasure.src = "./img/treasure.png"
 
+//exitdoors img
 let exitdoors = new Image()
 exitdoors.src = "./img/doors.png"
 
@@ -108,11 +111,13 @@ function level1(){
 
     setLevelExitValue(1435, 92, 100, 100)
 
+    //show lava text
     if (!lava.text){
         document.querySelector('#displayText').style.display = 'flex'
         document.querySelector('#displayText').innerHTML = 'Lava is rising, run!'
     } else document.querySelector('#displayText').style.display = 'none'
     
+    //the lava text is shown for the first five seconds after the level starts
     function textlava(){
         setInterval(function() {
             lava.text = true
@@ -123,6 +128,7 @@ function level1(){
     clearInterval(textlava)
 }
 
+//lifting of lava every 0.3 seconds
 function lavarise(){
     lava.y -= 5;
     lava.height += 5;
@@ -171,6 +177,31 @@ function level3(){
     if(gamecontroller.defetedenemy) setLevelExitValue(1435, 491, 100, 100)
 
     drawEnemy();
+
+    if (player.health <= 0 && keys.r.pressed) restart()
+}
+
+//restart level 3
+function restart(){
+    player.health = 100
+    enemy.health = 100
+    player.dead = false
+    switchSprite('Fall')
+
+    gamecontroller.levelStart = true;
+    spawn(spawner);
+
+    enemy.x = 1400
+    enemy.y = 530
+
+    document.querySelector('#displayText').style.display = 'none'
+
+    gsap.to('#playerHealth', {
+        width: player.health + '%'
+    })
+    gsap.to('#enemyHealth', {
+        width: enemy.health + '%'
+    })
 }
 
 //level 4
@@ -184,7 +215,7 @@ function level4(){
 
     ctx.drawImage(treasure, 1400, 529, 60, 60);
 
-    //
+    //check if the player has entered the sprite with the treasure, if so, show the text and reload the page after 5 seconds
     if(player.y + 30 >= 529 && player.y + player.height - 30 <= 529 + 30){
         if(player.x + 15 >= 1400 && player.x + player.width - 15 <= 1400 + 25){
             document.querySelector('#displayText').style.display = 'flex'
@@ -196,6 +227,7 @@ function level4(){
     }
 }
 
+//setting platforms values to platforms creator
 function setPlatformValue(x, y, width, height, color){
     platform.x = x;
     platform.y = y;
@@ -206,10 +238,12 @@ function setPlatformValue(x, y, width, height, color){
     platformCreator(platform);
 }
 
+//creating platforms
 function platformCreator({x, y, width, height, color}){
     ctx.fillStyle = color;
     ctx.fillRect(x, y, width, height);
 
+    //collision between player and platforms, if player is on top of the platfrom - stop player
     if(player.y + player.height + gravity.gravityForce >= y && player.y + player.height < y + 10){
         if(player.x + player.width > x && player.x < x + width){
             player.y = y - player.height;
@@ -220,6 +254,7 @@ function platformCreator({x, y, width, height, color}){
     }
 }
 
+//setting death platforms values to death platforms creator
 function setDeathPlatformValue(x, y, width, height, color){
     deathplatform.x = x;
     deathplatform.y = y;
@@ -230,10 +265,12 @@ function setDeathPlatformValue(x, y, width, height, color){
     deathCreator(deathplatform)
 }
 
+//creating death platforms
 function deathCreator({x, y, width, height, color}){
     ctx.fillStyle = color;
     ctx.fillRect(x, y, width, height);
 
+    //return the player to the beginning of the level if he touches the death platforms
     if(player.y + player.height >= y && player.y <= y + height){
         if(player.x + player.width >= x + 10 && player.x <= x + width - 10){
             player.x = spawner.x;
@@ -247,14 +284,27 @@ function deathCreator({x, y, width, height, color}){
     }
 }
 
+//setting level exit values to level exit creator
+function setLevelExitValue(x, y, width, height){
+    exit.x = x;
+    exit.y = y;
+    exit.width = width;
+    exit.height = height;
+
+    levelExit(exit);
+}
+
+//creating level exit
 function levelExit({x, y, width, height}){
     ctx.drawImage(exitdoors, x, y, width, height)
 
+    //the player touches the level exit - move him to the next level
     if(player.y >= y - player.height/2 && player.y + player.height <= y + height + player.height/2){
         if(player.x >= x - player.width && player.x + player.width <= x + width + player.width){
             gamecontroller.level++
             document.querySelector('#displayText').style.display = 'none'
 
+            //not turning on full story mode - turn on menu
             if(gamecontroller.fullstory == false) {
                 levelMenuExecuted = false
                 gamecontroller.level = 0;
@@ -264,13 +314,4 @@ function levelExit({x, y, width, height}){
             movement.canJump = false;
         }
     }
-}
-
-function setLevelExitValue(x, y, width, height){
-    exit.x = x;
-    exit.y = y;
-    exit.width = width;
-    exit.height = height;
-
-    levelExit(exit);
 }

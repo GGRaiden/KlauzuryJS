@@ -1,3 +1,4 @@
+//player values
 let player = {
     x : 100,
     y : 400,
@@ -13,10 +14,6 @@ let player = {
     frameRate: 1,
     frameBuffer: 3,
     scale: 0.5,
-    offset: {
-        x: 215,
-        y: 157
-    },
     animations: {
         Idle: {
             imageSrc: './img/warrior/Idle.png',
@@ -96,6 +93,7 @@ let player = {
     lastDirection: 'right',
 }
 
+//adding key in player animation
 for (let key in player.animations) {
     const image = new Image()
     image.src = player.animations[key].imageSrc
@@ -103,10 +101,12 @@ for (let key in player.animations) {
     player.animations[key].image = image
 }
 
+//gravity values
 let gravity = {
     gravityForce : 0,
 }
 
+//movement values
 let movement = {
     left : false,
     right : false,
@@ -114,6 +114,7 @@ let movement = {
     speed : 5,
 }
 
+//camerabox values
 let camerabox = {
     position: {
       x: player.x,
@@ -123,34 +124,41 @@ let camerabox = {
     height: 80,
 }
 
+//velocity values
 let velocity = {
     x : 0,
     y : 1,
 }
 
+//switching player sprite depending on the key
 function switchSprite(key) {
+    //same sprite - return
     if (image === player.animations[key].image || !sprite.loaded) return
 
+    //overriding all other animations with the attack animation
     if (
         image === player.animations.Attack1.image  &&
         currentFrame < player.animations.Attack1.frameRate - 1
     ) return
-
+    
+    //overriding all other animations with the attack left animation
     if (
         image === player.animations.Attack1left.image  &&
         currentFrame < player.animations.Attack1left.frameRate - 1
     ) return
 
-    if (image === player.animations.Death.image) {
-        if (currentFrame === player.animations.Death.frameRate - 1)
-            player.dead = true
-            return
-    }
-
+    //override when player gets hit
     if (
         image === player.animations.TakeHit.image &&
         currentFrame < player.animations.TakeHit.frameRate - 1
     ) return
+    
+    //override when player dies
+    if (image === player.animations.Death.image && !keys.r.pressed) {
+        if (currentFrame === player.animations.Death.frameRate - 1)
+            player.dead = true
+            return
+    }
 
     currentFrame = 0
     image = player.animations[key].image
@@ -159,12 +167,15 @@ function switchSprite(key) {
 }
 
 function drawPlayer(){
+    //player attack box range collision
     //ctx.fillStyle='red';
     //ctx.fillRect(player.attackBox.position.x, player.attackBox.position.y, player.attackBox.width, player.attackBox.height);
 
+    //player collision
     //ctx.fillStyle = 'rgba(255, 0, 0, 0.2)'
     //ctx.fillRect(player.x, player.y, player.width, player.height)
 
+    //calling for player sprite animation
     update();
 
     if(player.dead) return
@@ -173,6 +184,7 @@ function drawPlayer(){
     moveHorizontal();
     updateCamerabox();
 
+    //camera box collison
     /*ctx.fillStyle = 'rgba(0, 0, 255, 0.2)'
     ctx.fillRect(
         camerabox.position.x,
@@ -181,11 +193,13 @@ function drawPlayer(){
         camerabox.height
     )*/
     
+    //switching attack box position depanding on what direction the player is facing
     if(player.lastDirection == "right") player.attackBox.position.x = player.x + player.attackBox.offset.x
     else player.attackBox.position.x = player.x - player.attackBox.offset.x - 8
     player.attackBox.position.y = player.y + player.attackBox.offset.y
 }
 
+//player take hit
 function takeHit() {
     player.health -= 5
 
@@ -194,6 +208,7 @@ function takeHit() {
     } else switchSprite('TakeHit')
 }
 
+//player greavity
 function playergravity(){
     if(player.y + player.height + gravity.gravityForce < canvas.height){
         player.y += gravity.gravityForce;
@@ -210,6 +225,7 @@ function playergravity(){
     }
 }
 
+//player horizontal move
 function moveHorizontal(){
     if(movement.right == true){
         player.x += movement.speed;
@@ -228,6 +244,7 @@ function moveHorizontal(){
     }
 }
 
+//player jump
 function jump(){
     if(movement.canJump == true && player.grounded){
         if(gravity.gravityForce >= 0){
@@ -238,6 +255,7 @@ function jump(){
     }
 }
 
+//camera box updating
 function updateCamerabox() {
     camerabox = {
       position: {

@@ -1,6 +1,7 @@
 let menubackground = new Image();
 menubackground.src = "./img/backgrounds/menubackground.jpg"
 
+//calculate space between canvas and window
 let rect = canvas.getBoundingClientRect();
 
 //mouse position values
@@ -50,7 +51,7 @@ function titlescreen() {
       levelMenuExecuted = true;
     }
   }
-  
+
   document.querySelector('#displayText').style.display = 'none'
 }
 

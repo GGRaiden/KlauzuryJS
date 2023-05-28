@@ -1,3 +1,4 @@
+//enemy sprite values
 let enemysprite = {
     position: {
         x: 0,
@@ -15,6 +16,8 @@ let enemycurrentFrame = 0;
 
 let enemyimage = new Image();
 
+
+//set enemy sprite values onload of image
 function enemyonload() {
     enemysprite.position.x = enemy.x
     enemysprite.position.y = enemy.y
@@ -22,7 +25,8 @@ function enemyonload() {
     enemysprite.height = enemyimage.height * enemy.scale
     enemysprite.loaded = true
 }
-  
+
+//drawing enemy sprite
 function drawEnemySprite() {
     enemyonload()
 
@@ -54,7 +58,8 @@ function enemyupdate() {
     drawEnemySprite()
     updateEnemyFrames()
 }
-  
+
+//updating enemy sprite frames
 function updateEnemyFrames() {
     if (enemy.dead) return
     
