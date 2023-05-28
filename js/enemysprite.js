@@ -8,7 +8,6 @@ let enemysprite = {
     height: 0,
 
     loaded: false,
-    loadedBackground: false,
     elapsedFrames: 0
 }
 

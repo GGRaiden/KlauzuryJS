@@ -8,7 +8,6 @@ let sprite = {
     height: 0,
 
     loaded: false,
-    loadedBackground: false,
     elapsedFrames: 0
 }
 
