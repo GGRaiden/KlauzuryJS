@@ -2,17 +2,21 @@ let canvas = document.getElementById('canvas');
 let ctx = canvas.getContext('2d');
 let background = new Image();
 
+//onload set interval
 window.onload = function(){
     setInterval(draw, 15)
 }
 
+
+//camera
 const camera = {
   position: {
     x: 0,
-    y: -300,
+    y: -320,
   },
 }
 
+//key pressed
 const keys = {
   d: {
     pressed: false,
@@ -20,12 +24,17 @@ const keys = {
   a: {
     pressed: false,
   },
+  r: {
+    pressed: false
+  }
 }
 
+//backgounds
 function drawBackground() {
   ctx.drawImage(background, 0, 0, background.width, background.height);
 }
 
+//draw - levels, player, camera
 function draw() {
   if (gamecontroller.level != 0) {
     ctx.save();
@@ -76,11 +85,10 @@ function draw() {
       if(player.lastDirection == "right") switchSprite("Attack1")
       else switchSprite("Attack1left")
     }
-  }
-  else {
+  } else {
     levelController();
   }
-
+  
   if (player.isAttacking && currentFrame === 2) {
     player.isAttacking = false
   }
@@ -94,7 +102,8 @@ function draw() {
       rectangle1: player,
       rectangle2: enemy
     }) &&
-    player.isAttacking
+    player.isAttacking &&
+    currentFrame === 1
   ) {
     takeEnemyHit()
     player.isAttacking = false
@@ -109,7 +118,8 @@ function draw() {
       rectangle1: enemy,
       rectangle2: player
     }) &&
-    enemy.isAttacking
+    enemy.isAttacking &&
+    enemycurrentFrame === 1
   ) {
     takeHit()
     enemy.isAttacking = false
@@ -120,8 +130,28 @@ function draw() {
   }
 
   ctx.restore();
+
+  if (enemy.health <= 0 && gamecontroller.level == 3 || player.health <= 0 && gamecontroller.level == 3) {
+    determineWinner({ player, enemy})
+  }
+
+  if (player.health <= 0 && keys.r.pressed){
+    location.reload();
+    gamecontroller.level = 3
+  }
+
+  if(gamecontroller.level == 3){
+    document.querySelector('#healthbar').style.display = 'flex'
+    document.querySelector('#playerhealth').style.display = 'flex'
+    document.querySelector('#timer').style.display = 'flex'
+  } else {
+    document.querySelector('#healthbar').style.display = 'none'
+    document.querySelector('#playerhealth').style.display = 'none'
+    document.querySelector('#timer').style.display = 'none'
+  }
 }
 
+//checking if player or enemy is in range of attack
 function rectangularCollision({ rectangle1, rectangle2 }) {
   return (
     rectangle1.attackBox.position.x + rectangle1.attackBox.width >=
@@ -134,6 +164,8 @@ function rectangularCollision({ rectangle1, rectangle2 }) {
   )
 }
 
+
+//checking if player is near enemy - enemy start attacking
 function rectangularCollisionPlayer({ rectangle1, rectangle2 }) {
   return (
     rectangle1.playerDetection.x + rectangle1.playerDetection.width >=
@@ -146,6 +178,20 @@ function rectangularCollisionPlayer({ rectangle1, rectangle2 }) {
   )
 }
 
+
+//changing dislay in HTML on flex and text change based on health of enemy and player
+function determineWinner({ player, enemy}) {
+  document.querySelector('#displayText').style.display = 'flex'
+  if (player.health > enemy.health) {
+    document.querySelector('#displayText').innerHTML = 'You the defeated enemy! Find the exit to advance to the next level.'
+    gamecontroller.defetedenemy = true
+  } else if (player.health < enemy.health) {
+    document.querySelector('#displayText').innerHTML = 'You have been killed by enemy! Press R to restart level.'
+  }
+}
+
+
+//checking if key on keyboard is pressed
 window.addEventListener('keydown', (event) => {
   switch (event.key) {
     case 'd':
@@ -154,16 +200,18 @@ window.addEventListener('keydown', (event) => {
     case 'a':
       keys.a.pressed = true
       break
+    case 'r':
+      keys.r.pressed = true
+      break
     case ' ':
       movement.canJump = true
       velocity.y = -10
       break
-    case 's':
-      takeHit()
-      break
   }
 })
-  
+
+
+//checking if key on keyboard is unpressed
 window.addEventListener('keyup', (event) => {
   switch (event.key) {
     case 'd':
@@ -172,9 +220,16 @@ window.addEventListener('keyup', (event) => {
     case 'a':
       keys.a.pressed = false
       break
+    case 'r':
+      keys.r.pressed = false
+      break
+      case ' ':
+      movement.canJump = false
+      break
   }
 })
 
+//checking if button on mouse is pressed
 canvas.addEventListener('mousedown', (event) => {
   getMousePos(event);
   player.isAttacking = true;

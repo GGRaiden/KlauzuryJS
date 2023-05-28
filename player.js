@@ -6,6 +6,7 @@ let player = {
 
     health: 100,
     isAttacking: false,
+    grounded: false,
     dead: false,
 
     imageSrc: './img/warrior/Idle.png',
@@ -70,7 +71,7 @@ let player = {
         TakeHit: {
             imageSrc: './img/warrior/TakeHit.png',
             frameRate: 4,
-            frameBuffer: 3,
+            frameBuffer: 4,
         },
         Death: {
             imageSrc: './img/warrior/Death.png',
@@ -228,28 +229,31 @@ function moveHorizontal(){
 }
 
 function jump(){
-    if(movement.canJump == true){
+    if(movement.canJump == true && player.grounded){
         if(gravity.gravityForce >= 0){
             gravity.gravityForce = -15;
         }
         movement.canJump = false;
+        player.grounded = false;
     }
 }
 
 function updateCamerabox() {
     camerabox = {
       position: {
-        x: player.x - 90,
+        x: player.x - 165,
         y: player.y - 40,
       },
-      width: 200,
-      height: 80,
+      width: 350,
+      height: camerabox.height,
     }
 }
 
 function shouldPanCameraToTheLeft() {
     const cameraboxRightSide = camerabox.position.x + camerabox.width
     const scaledDownCanvasWidth = canvas.width / 3
+
+    shouldPanCameraUp()
 
     if (cameraboxRightSide >= 1500) return
 
@@ -259,18 +263,16 @@ function shouldPanCameraToTheLeft() {
     ) {
       camera.position.x -= velocity.x;
     }
-
-    shouldPanCameraUp()
 }
 
 function shouldPanCameraToTheRight() {
+    shouldPanCameraUp()
+
     if (camerabox.position.x <= 0) return
 
     if (camerabox.position.x <= Math.abs(camera.position.x)) {
       camera.position.x -= velocity.x;
     }
-
-    shouldPanCameraUp()
 }
 
 function shouldPanCameraDown() {

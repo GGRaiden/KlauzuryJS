@@ -10,6 +10,10 @@
             box-sizing: border-box;
         }
 
+        body {
+            background-color: rgb(43, 43, 43)
+        }
+
         canvas {
             border: 2px solid #ccc;
         }
@@ -24,9 +28,10 @@
     <div style="position: relative; display: inline-block">
         <!-- smaller red container div -->
         <div
+            id="healthbar"
             style="
             position: absolute;
-            display: flex;
+            display: none;
             width: 100%;
             align-items: center;
             padding: 20px;
@@ -34,10 +39,11 @@
         >
             <!-- player health -->
             <div
+            id="playerhealth"
             style="
                 position: relative;
                 width: 100%;
-                display: flex;
+                display: none;
                 justify-content: flex-end;
                 border-top: 4px solid white;
                 border-left: 4px solid white;
@@ -66,7 +72,7 @@
                 width: 100px;
                 height: 50px;
                 flex-shrink: 0;
-                display: flex;
+                display: none;
                 align-items: center;
                 justify-content: center;
                 border: 4px solid white;
@@ -96,6 +102,23 @@
                 "
             ></div>
             </div>
+        </div>
+        <div
+        id="displayText"
+        style="
+            position: absolute;
+            color: white;
+            font-family: ThaleahFat;
+            font-size: 30px;
+            align-items: center;
+            justify-content: center;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            display: none;
+        "
+        >
         </div>
         <canvas id="canvas" width="1500" height="730"></canvas>
     </div>

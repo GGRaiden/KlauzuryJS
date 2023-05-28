@@ -116,7 +116,7 @@ function switchEnemySprite(key) {
 function drawEnemy(){
     //ctx.fillStyle='blue';
     //ctx.fillRect(enemy.playerDetection.x, enemy.playerDetection.y, enemy.playerDetection.width, enemy.playerDetection.height);
-    
+
     //ctx.fillStyle='red';
     //ctx.fillRect(enemy.attackBox.position.x, enemy.attackBox.position.y, enemy.attackBox.width, enemy.attackBox.height);
 
