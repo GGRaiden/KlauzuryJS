@@ -158,8 +158,7 @@ function drawEnemy(){
     else enemy.attackBox.position.x = enemy.x - enemy.attackBox.offset.x - 18
     enemy.attackBox.position.y = enemy.y + enemy.attackBox.offset.y
 
-    if (enemy.health <= 0) {
-        switchEnemySprite('Death')
+    if (enemy.health <= 0) sswitchEnemySprite('Death')
 }
 
 //if player is in player detection collision - enemy starts attacking
@@ -183,6 +182,5 @@ enemyattack();
 //enemy take hit
 function takeEnemyHit() {
     enemy.health -= 5
-
     switchEnemySprite('TakeHit')
 }
