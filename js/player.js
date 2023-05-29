@@ -199,6 +199,7 @@ function drawPlayer(){
     player.attackBox.position.y = player.y + player.attackBox.offset.y
 
     if (player.health <= 0) switchSprite('Death')
+}
 
 //player take hit
 function takeHit() {
