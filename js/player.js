@@ -197,15 +197,15 @@ function drawPlayer(){
     if(player.lastDirection == "right") player.attackBox.position.x = player.x + player.attackBox.offset.x
     else player.attackBox.position.x = player.x - player.attackBox.offset.x - 8
     player.attackBox.position.y = player.y + player.attackBox.offset.y
+
+    if (player.health <= 0) {
+        switchSprite('Death')
 }
 
 //player take hit
 function takeHit() {
     player.health -= 5
-
-    if (player.health <= 0) {
-      switchSprite('Death')
-    } else switchSprite('TakeHit')
+    switchSprite('TakeHit')
 }
 
 //player greavity
